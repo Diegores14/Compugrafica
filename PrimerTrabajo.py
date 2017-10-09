@@ -146,6 +146,7 @@ if __name__ == '__main__':
 
 		if niveles ==1:
 			val = True
+			pausa = False
 			jg = Jugador()
 			bar = Barrera(ANCHO,50)
 			bar1 = Barrera(ANCHO,10)
@@ -163,27 +164,39 @@ if __name__ == '__main__':
 			general.add(bar1)
 			barreras.add(bar1)
 			while val:
-				if tiempo == 50:
-					r = Rival(20,20)
-					r.var_x = 2
-					general.add(r)
-					rivales.add(r)
-				if tiempo == 0:
-					r = Rival(20,20)
-					general.add(r)
-					rivales.add(r)
-					tiempo = 100
-				else:
-					tiempo -= 1
-				reloj.tick(60)
-				general.draw(pantalla)
-				for i in range(vida):
-					pygame.draw.rect(pantalla,(255,0,0), (20 + i*25,365,20,20), 0)
-				Fuente2 = pygame.font.Font(None, 25)
-				Texto2 = Fuente2.render("PUNTAJE : "+ str(puntaje),0, (0, 0, 0))
-				pantalla.blit(Texto2, (400, 365))
-				pygame.display.flip()
-				pantalla.fill((255,255,255))
+				if not pausa:
+					if tiempo == 50:
+						r = Rival(20,20)
+						r.var_x = 2
+						general.add(r)
+						rivales.add(r)
+					if tiempo == 0:
+						r = Rival(20,20)
+						general.add(r)
+						rivales.add(r)
+						tiempo = 100
+					else:
+						tiempo -= 1
+					reloj.tick(60)
+					general.draw(pantalla)
+					for i in range(vida):
+						pygame.draw.rect(pantalla,(255,0,0), (20 + i*25,365,20,20), 0)
+					Fuente2 = pygame.font.Font(None, 25)
+					Texto2 = Fuente2.render("PUNTAJE : "+ str(puntaje),0, (0, 0, 0))
+					pantalla.blit(Texto2, (400, 365))
+					pygame.display.flip()
+					pantalla.fill((255,255,255))
+					general.update()
+					col1 = pygame.sprite.spritecollide(bar, rivales, True)
+					col2 = pygame.sprite.spritecollide(jg, rivales, True)
+					col3 = pygame.sprite.groupcollide(Balas, rivales, True, True)
+					col4 = pygame.sprite.spritecollide(bar1, Balas, True)
+					for i in col1: puntaje += 1
+					for i in col3: puntaje += 1
+					for i in col2: vida -= 1
+					if vida == 0:
+						niveles = 2
+						val = False
 				for event in pygame.event.get():
 					if event.type == pygame.KEYDOWN:
 						if event.key == pygame.K_RIGHT:
@@ -197,23 +210,15 @@ if __name__ == '__main__':
 							B = Bala(5, 10, jg.rect.x)
 							general.add(B)
 							Balas.add(B)
+						if event.key == pygame.K_p:
+							pausa = not pausa
 					if event.type == pygame.KEYUP:
 						if event.key == pygame.K_RIGHT or event.key == pygame.K_LEFT:
 							jg.var_x = 0
 					if event.type == pygame.QUIT:
 						validacion = False
 						val = False
-				general.update()
-				col1 = pygame.sprite.spritecollide(bar, rivales, True)
-				col2 = pygame.sprite.spritecollide(jg, rivales, True)
-				col3 = pygame.sprite.groupcollide(Balas, rivales, True, True)
-				col4 = pygame.sprite.spritecollide(bar1, Balas, True)
-				for i in col1: puntaje += 1
-				for i in col3: puntaje += 1
-				for i in col2: vida -= 1
-				if vida == 0:
-					niveles = 2
-					val = False
+					
 
 		if niveles == 2:
 			gameover = InterfasGameOver(pantalla)
