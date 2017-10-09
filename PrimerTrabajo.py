@@ -46,13 +46,10 @@ class InterfasInicio(pygame.sprite.Sprite):
 		pygame.display.flip()
 
 class InterfasGameOver(pygame.sprite.Sprite):
-	Fuente1 = pygame.font.Font(None, 60)
-	Fuente2 = pygame.font.Font(None, 20)
-	Texto1 = Fuente1.render("GAME OVER", 0, (0, 0, 225))
-	Texto2 = Fuente2.render("APRETAR ENTER PARA CONTINUAR",0, (0, 0, 225))
+	imagen = pygame.image.load('GameOver1.jpg')
+	escalado = pygame.transform.scale(imagen, (600, 400))
 	def __init__(self, p):
-		p.blit(self.Texto1, (170, 200))
-		p.blit(self.Texto2, (175, 150))
+		p.blit(self.escalado, (0, 0))
 		pygame.display.flip()
 
 class Jugador(pygame.sprite.Sprite):
