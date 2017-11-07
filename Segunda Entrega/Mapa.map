@@ -8,6 +8,7 @@ bloque = (1002,393, 41, 50)
 puente = (1805,1003, 35, 70)
 maquina1 = (850,710, 20, 33)
 maquina2 = (868,710, 20, 33)
+Fondo1 = (0,0,700,500)
 
 [nivel1]
 imagen = pokemon2.png
@@ -45,3 +46,4 @@ maquina2 = ((465, 10),)
 
 [nivel2]
 imagen = CasaGoku1.jpg
+Fondo1 = ((0,0),)
