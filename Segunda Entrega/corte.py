@@ -10,7 +10,7 @@ if __name__=='__main__':
 	ancho_img,alto_img =imagen.get_size()
 	print ("ancho: ",ancho_img,"alto: ",alto_img)
 	pantalla.fill((255,0,0))
-	cuadro=(868,710, 20, 33)
+	cuadro=(1555,1744, 16, 22)
 	recorte=imagen.subsurface(cuadro)
 	reloj=pygame.time.Clock()
 	pantalla.blit(recorte,[0,0])
@@ -19,5 +19,7 @@ if __name__=='__main__':
 		for event in pygame.event.get():
 			if event.type==pygame.QUIT:
 				fin=True
+			if event.type==pygame.KEYDOWN:
+			  fin = True
 			pygame.display.flip()
-			reloj.tick(5)
+			reloj.tick(60)
