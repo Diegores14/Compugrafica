@@ -116,10 +116,10 @@ class Disparo(pygame.sprite.Sprite):
 		self.rect.x += self.var_x
 
 class Barrera(pygame.sprite.Sprite):
-	def __init__(self):
+	def __init__(self,an,al):
 		pygame.sprite.Sprite.__init__(self)
-		self.image = pygame.Surface((50, 500))
-		self.image.fill((0,0,255))
+		self.image = pygame.Surface((an, al))
+		self.image.fill((0,160,0))
 		self.rect = self.image.get_rect()
 		self.rect.x = -50
 		self.rect.y = 0
@@ -296,25 +296,30 @@ if __name__=='__main__':
 	pantalla=pygame.display.set_mode([ANCHO,ALTO])
 	nivel = 1
 	#        1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2
-	mapa = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0],
-			[1,1,1,1,1,1,1,1,1,0,0,1,1,1,0,1,1,1,0,0,1,0],
-			[0,0,0,0,0,0,0,1,1,0,0,1,0,1,0,1,0,1,0,0,1,0],
-			[0,0,0,0,0,0,0,1,1,0,0,1,0,1,0,1,0,1,0,0,1,0],
-			[0,1,1,1,1,1,1,1,1,0,0,1,0,1,0,1,0,1,0,0,1,0],
-			[0,1,1,1,1,1,1,1,1,0,0,1,0,1,0,1,0,1,0,0,1,0],
-			[0,0,0,0,0,0,0,1,1,0,0,1,0,1,0,1,0,1,0,0,1,0],
-			[0,0,0,0,0,0,0,1,1,0,0,1,0,1,0,1,0,1,0,1,1,0],
-			[0,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,0,0],
-			[0,1,1,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,0,0],
-			[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0,1,0,0],
-			[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0,0],
-			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0],
-			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0],
-			[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0,0],
-			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]]
+	mapa = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0], #1
+			[1,1,1,1,1,1,1,1,1,0,0,1,1,1,0,1,1,1,0,0,1,0], #2
+			[0,0,0,0,0,0,0,1,1,0,0,1,0,1,0,1,0,1,0,0,1,0], #3
+			[0,0,0,0,0,0,0,1,1,0,0,1,0,1,0,1,0,1,0,0,1,0], #4
+			[0,1,1,1,0,1,1,1,1,0,0,1,0,1,0,1,0,1,0,0,1,0], #5
+			[0,1,0,1,1,1,1,1,1,0,0,1,0,1,0,1,0,1,0,0,1,0], #6
+			[0,0,0,0,0,0,0,1,1,0,0,1,0,1,0,1,0,1,0,0,1,0], #7
+			[0,0,0,0,0,0,0,1,1,0,0,1,0,1,0,1,0,1,0,1,1,0], #8
+			[0,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,0,0], #9
+			[0,1,1,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,0,0], #10
+			[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0,1,0,0], #11
+			[0,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,0,1,0,0], #12
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0], #13
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0], #14
+			[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0,0], #15
+			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]] #16
 	Fuente = pygame.font.Font('Fuentes/A.C.M.E. Secret Agent.ttf', 25)
 	pygame.mixer.music.load('pokemon.mp3')
-	pygame.mixer.music.play(1)
+	SDisparo = pygame.mixer.Sound("Sonidos/Disparo.ogg")
+	SVuelo = pygame.mixer.Sound('Sonidos/fly_1.ogg')
+	SExplosion = pygame.mixer.Sound('Sonidos/explosion1.ogg')
+	SPerdiste = pygame.mixer.Sound('Sonidos/Perdiste.ogg')
+	Fondo3 = pygame.mixer.Sound('Sonidos/Fondo3.ogg')
+	perdiste = pygame.transform.scale(pygame.image.load('game-over.jpg'), (700,500))
 	# todo el pedazo de aqui carga todos los jugadores, puente, agua, casas,
 	jp = Jugador()
 	puente = pygame.image.load('Puente2.png').convert_alpha()
@@ -330,6 +335,8 @@ if __name__=='__main__':
 	gym = Gym(500, 270)
 	maquina1 = Maquina(445, 10)
 	maquina2 = Maquina(465, 10)
+	bar = Barrera(50,23)
+	bar.rect.x = 445
 	Imagen1 = pygame.transform.flip(pygame.image.load('CasaGoku1.jpg').convert_alpha(), True, False)
 	BarraVida = pygame.transform.scale(pygame.image.load('BarraVida.png').convert_alpha(),(172,30))
 	general.add(jp)
@@ -339,6 +346,7 @@ if __name__=='__main__':
 	objetos.add(agua2)
 	objetos.add(tienda)
 	objetos.add(gym)
+	objetos.add(bar)
 	Maquinas.add(maquina1)
 	Maquinas.add(maquina2)
 	for i in ((0, 400), (0, 300), (450, 400)):
@@ -346,6 +354,8 @@ if __name__=='__main__':
 		objetos.add(Casas)
 	reloj=pygame.time.Clock()
 	while True:
+		if nivel == 1:
+			pygame.mixer.music.play(1)
 		while nivel == 1:
 			for event in pygame.event.get():
 				if event.type==pygame.QUIT:
@@ -364,7 +374,14 @@ if __name__=='__main__':
 						jp.var_y = -1 
 					if event.key == pygame.K_RIGHT or event.key == pygame.K_d:
 						jp.dir = 3
-						jp.var_x = 1 
+						jp.var_x = 1
+					if event.key == pygame.K_v :
+						if pygame.sprite.spritecollide(jp, Maquinas, False) != []:
+							if jp.rect.x < 465:
+								nivel = 2
+							else:
+								nivel = 3
+							pygame.mixer.music.stop()
 				if event.type == pygame.KEYUP:
 					jp.var_x = 0
 					jp.var_y = 0
@@ -384,8 +401,8 @@ if __name__=='__main__':
 			oponente = Gohan()
 			general1.add(oponente)
 			NumOponente = False
-			barreras.add(Barrera())
-			barre = Barrera()
+			barreras.add(Barrera(50, 500))
+			barre = Barrera(50, 500)
 			barre.rect.x = 700
 			barreras.add(barre)
 			segundos = int(pygame.time.get_ticks()/1000) + 120
@@ -405,6 +422,7 @@ if __name__=='__main__':
 						Gk.dir = 4
 						Gk.x = 0
 						Gk.corre = False
+						SVuelo.play()
 					if event.key == pygame.K_DOWN:
 						Gk.var_y = 1
 						Gk.dir = 0
@@ -416,34 +434,52 @@ if __name__=='__main__':
 						Gk.x = 0
 						Gk.corre = False
 						disparos.add(Disparo(25, Gk.rect.y+8, 3, 90))
+						SDisparo.play()
 				if event.type == pygame.KEYUP:
 					Gk.var_y = 0
 					Gk.dir = 1
 					Gk.x = 2
+					SVuelo.stop()
 			Gk.update()
 			if aux >= 50:
 				if Gk.rect.y - oponente.rect.y > 0:
 					oponente.var_y = 1
 					oponente.dir = 2
+					SVuelo.play()
 				if Gk.rect.y - oponente.rect.y < 0:
 					oponente.var_y = -1
 					oponente.dir = 1
+					SVuelo.stop()
 				if Gk.rect.y - oponente.rect.y == 0:
 					oponente.var_y = 0
 					# oponente.dir = 0
+					SVuelo.stop()
 				aux = 0
 			if abs(Gk.rect.y - oponente.rect.y) <= 30 and aux1 >= 20:
 				oponente.dir = 3
 				disparos.add(Disparo(657, oponente.rect.y+8, -5, 270))
+				SDisparo.play()
 				aux1 = 0
 			if oponente.Vida <= 0 and not NumOponente:
 				general1.remove(oponente)
 				oponente = Gotens()
 				general1.add(oponente)
+				NumOponente = True
+			if oponente.Vida <= 0 and NumOponente:
+				nivel = 1
 			if pygame.sprite.spritecollide(Gk, disparos, True) != []:
 				Gk.Vida -= 10
+				SExplosion.play()
 			if pygame.sprite.spritecollide(oponente, disparos, True) != []:
 				oponente.Vida -= 10
+				SExplosion.play()
+			if Gk.Vida <= 0 or segundos - int(pygame.time.get_ticks()/1000) <= 0:
+				pantalla.blit(perdiste, (0,0))
+				pygame.display.flip()
+				SVuelo.stop()
+				SPerdiste.play()
+				pygame.time.delay(3000)
+				nivel = 1
 			pygame.sprite.groupcollide(disparos, barreras, True, False)
 			Texto1 = Fuente.render(str(segundos - int(pygame.time.get_ticks()/1000)), 0, (0, 0, 0))
 			oponente.update()
@@ -463,6 +499,13 @@ if __name__=='__main__':
 			terreno = pygame.image.load('terrenogen.png').convert_alpha()
 			Gk = Goku()
 			Gk.rect.y = 32
+			rivales = pygame.sprite.Group()
+			for i in ((160, 128),(96,160),(32,256),(352,352)):
+				rival = Jugador()
+				rival.rect.x = i[0]
+				rival.rect.y = i[1]
+				rival.var_x = 2
+				rivales.add(rival)
 			jug = pygame.sprite.Group()
 			suelos = pygame.sprite.Group()
 			bloques = pygame.sprite.Group()
@@ -473,6 +516,8 @@ if __name__=='__main__':
 						bloques.add(bloque(terreno,j*32,i*32))
 					if mapa[i][j]==1:
 						suelos.add(Suelo(terreno,j*32,i*32))
+			Fondo3.play()
+			segundos = int(pygame.time.get_ticks()/1000) + 60
 		while nivel == 3:
 			for event in pygame.event.get():
 				if event.type==pygame.QUIT:
@@ -495,14 +540,25 @@ if __name__=='__main__':
 				if event.type == pygame.KEYUP:
 					Gk.var_x = 0
 					Gk.var_y = 0
+			Gk.update()
 			if pygame.sprite.spritecollide(Gk, bloques, False) != []:
 				Gk.rect.x -= Gk.var_x
 				Gk.rect.y -= Gk.var_y
-				Gk.var_x = 0
-				Gk.var_y = 0
-			Gk.update()
+			for i in pygame.sprite.groupcollide(rivales, bloques, False,False):
+				i.var_x *= -1
+			if pygame.sprite.spritecollide(Gk, rivales, False) != []:
+				Fondo3.stop()
+				SPerdiste.play()
+				pantalla.blit(perdiste, (0,0))
+				pygame.display.flip()
+				pygame.time.delay(3000)
+				nivel = 1
+			rivales.update()
+			Texto1 = Fuente.render(str(segundos - int(pygame.time.get_ticks()/1000)), 0, (0, 0, 0))
 			suelos.draw(pantalla)
 			bloques.draw(pantalla)
+			rivales.draw(pantalla)
 			jug.draw(pantalla)
+			pantalla.blit(Texto1, (330,0))
 			pygame.display.flip()
 			reloj.tick(60)
