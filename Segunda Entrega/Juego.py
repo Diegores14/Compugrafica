@@ -1,5 +1,4 @@
 import pygame
-import configparser
 import random
 import sys
 
@@ -295,6 +294,7 @@ if __name__=='__main__':
 	pygame.init()
 	pantalla=pygame.display.set_mode([ANCHO,ALTO])
 	nivel = 1
+	Iinicio = pygame.transform.scale(pygame.image.load('Inicio.jpg'),(700,500))
 	#        1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2
 	mapa = [[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0], #1
 			[1,1,1,1,1,1,1,1,1,0,0,1,1,1,0,1,1,1,0,0,1,0], #2
@@ -307,13 +307,14 @@ if __name__=='__main__':
 			[0,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0,1,0,1,0,0], #9
 			[0,1,1,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,1,0,0], #10
 			[0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,0,1,0,0], #11
-			[0,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,0,1,0,1,0,0], #12
+			[0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,0,1,0,0], #12
 			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0], #13
 			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0], #14
 			[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,0,0], #15
 			[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]] #16
 	Fuente = pygame.font.Font('Fuentes/A.C.M.E. Secret Agent.ttf', 25)
-	pygame.mixer.music.load('pokemon.mp3')
+	Fuente1 = pygame.font.Font('Fuentes/Action Is Shaded JL.ttf', 25)
+	pygame.mixer.music.load('Sonidos/pokemon.ogg')
 	SDisparo = pygame.mixer.Sound("Sonidos/Disparo.ogg")
 	SVuelo = pygame.mixer.Sound('Sonidos/fly_1.ogg')
 	SExplosion = pygame.mixer.Sound('Sonidos/explosion1.ogg')
@@ -326,7 +327,6 @@ if __name__=='__main__':
 	general = pygame.sprite.Group()
 	Maquinas = pygame.sprite.Group()
 	objetos = pygame.sprite.Group()
-	disparos = pygame.sprite.Group()
 	ar = Arbol(0,0)
 	ar1 = Arbol(490,0)
 	agua1 = RioI(0,228)
@@ -352,10 +352,26 @@ if __name__=='__main__':
 	for i in ((0, 400), (0, 300), (450, 400)):
 		Casas = Casa(i[0],i[1])
 		objetos.add(Casas)
+	pantalla.blit(Iinicio,(0,0))
+	pygame.display.flip()
+	pygame.time.delay(2000)
+	pantalla.fill((0,0,0))
+	texto = ['Ash es  un joven que le gusta jugar mucho,', 'en el pueblo hay dos maquinas de juegos', 'ayuda a ash a jugar en las maquinas']
+	for i in range(3):
+		Texto1 = Fuente.render(texto[i], 0, (255, 255, 255))
+		pantalla.blit(Texto1,(20,200 + 30*i))
+	pygame.display.flip()
+	pygame.time.delay(10000)
 	reloj=pygame.time.Clock()
 	while True:
 		if nivel == 1:
 			pygame.mixer.music.play(1)
+			for event in pygame.event.get():
+				if event.type==pygame.QUIT:
+					sys.exit()
+				if event.type == pygame.KEYDOWN:
+					if event.key == pygame.K_ESCAPE:
+						sys.exit()
 		while nivel == 1:
 			for event in pygame.event.get():
 				if event.type==pygame.QUIT:
@@ -397,6 +413,7 @@ if __name__=='__main__':
 			Gk = Goku()
 			general1 = pygame.sprite.Group()
 			barreras = pygame.sprite.Group()
+			disparos = pygame.sprite.Group()
 			general1.add(Gk)
 			oponente = Gohan()
 			general1.add(oponente)
@@ -466,6 +483,12 @@ if __name__=='__main__':
 				general1.add(oponente)
 				NumOponente = True
 			if oponente.Vida <= 0 and NumOponente:
+				SVuelo.stop()
+				pantalla.fill((0,0,0))
+				Texto1 = Fuente.render('HAS GANADO', 0, (255, 255, 255))
+				pantalla.blit(Texto1,(275,200))
+				pygame.display.flip()
+				pygame.time.delay(3000)
 				nivel = 1
 			if pygame.sprite.spritecollide(Gk, disparos, True) != []:
 				Gk.Vida -= 10
@@ -499,6 +522,8 @@ if __name__=='__main__':
 			terreno = pygame.image.load('terrenogen.png').convert_alpha()
 			Gk = Goku()
 			Gk.rect.y = 32
+			finalizador = Barrera(32,32)
+			finalizador.rect.x = 636
 			rivales = pygame.sprite.Group()
 			for i in ((160, 128),(96,160),(32,256),(352,352)):
 				rival = Jugador()
@@ -510,6 +535,12 @@ if __name__=='__main__':
 			suelos = pygame.sprite.Group()
 			bloques = pygame.sprite.Group()
 			jug.add(Gk)
+			pantalla.fill((0,0,0))
+			texto = ['Ayuda a Goku a pasar por el laberinto,', 'y que ninguno de sus enemigos lo toque']
+			for i in range(2):
+				Texto1 = Fuente.render(texto[i], 0, (255, 255, 255))
+				pantalla.blit(Texto1,(20,200 + 30*i))
+			pygame.display.flip()
 			for i in range(16):
 				for j in range(22):
 					if mapa[i][j]==0:
@@ -546,12 +577,20 @@ if __name__=='__main__':
 				Gk.rect.y -= Gk.var_y
 			for i in pygame.sprite.groupcollide(rivales, bloques, False,False):
 				i.var_x *= -1
-			if pygame.sprite.spritecollide(Gk, rivales, False) != []:
+			if pygame.sprite.spritecollide(Gk, rivales, False) != [] or segundos - int(pygame.time.get_ticks()/1000) <= 0:
 				Fondo3.stop()
 				SPerdiste.play()
 				pantalla.blit(perdiste, (0,0))
 				pygame.display.flip()
 				pygame.time.delay(3000)
+				nivel = 1
+			if pygame.sprite.spritecollide(finalizador, jug, False):
+				pantalla.fill((0,0,0))
+				Texto1 = Fuente.render('HAS GANADO', 0, (255, 255, 255))
+				pantalla.blit(Texto1,(275,200))
+				pygame.display.flip()
+				pygame.time.delay(3000)
+				Fondo3.stop()
 				nivel = 1
 			rivales.update()
 			Texto1 = Fuente.render(str(segundos - int(pygame.time.get_ticks()/1000)), 0, (0, 0, 0))
